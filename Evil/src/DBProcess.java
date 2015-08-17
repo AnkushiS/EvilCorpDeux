@@ -18,6 +18,27 @@ public class DBProcess {
 		return conn;
 	}
 
+	
+	public static int checkAccExists(String name){
+		int count=0;
+		try {
+			name = name.toLowerCase();
+			Connection conn = dbConfig();
+			
+			String sql = "select count(*) from accounts where name=" + "'" +name + "'";
+			PreparedStatement preStatement = conn.prepareStatement(sql);
+			ResultSet result = preStatement.executeQuery();
+			
+			while(result.next()){
+				count = result.getInt(1);
+			}			
+		}catch(SQLException e){
+			System.out.println("In CheckAccExists: " + e.getMessage());
+		}
+		return count;
+	}
+	
+	
 	public static void updateDbAllTran(Lists ll) {
 
 		try {
@@ -59,7 +80,7 @@ public class DBProcess {
 			for (Account lttBal : ll.getInitAcc()) {
 				String sql = "update accounts set init_bal="
 						+ lttBal.getInitBal() + "where acct_id="
-						+ lttBal.getAccNum();
+						+ "'" + lttBal.getAccNum() + "'";
 				PreparedStatement preStatement = conn.prepareStatement(sql);
 				preStatement.executeQuery();
 				conn.commit();

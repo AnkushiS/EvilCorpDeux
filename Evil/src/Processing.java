@@ -10,7 +10,7 @@ public class Processing {
 	public static void populateListDB(Lists ll) {
 		try {
 			Connection conn = DBProcess.dbConfig();
-			String sql = "select Acct_id, name, init_bal from Accounts";
+			String sql = "select Acct_id, name, init_bal, birthdate, acct_type from Accounts";
 			PreparedStatement preStatement = conn.prepareStatement(sql);
 			ResultSet result = preStatement.executeQuery();
 			while (result.next()) {
@@ -18,6 +18,8 @@ public class Processing {
 				acc.setAccNum(result.getString("acct_id"));
 				acc.setName(result.getString("name"));
 				acc.setInitBal(result.getDouble("Init_bal"));
+				acc.setBirthdate(result.getDate("birthdate"));
+				acc.setAccType(result.getString("acct_type"));
 				ll.setInitAcc(acc);
 			}
 
@@ -82,25 +84,36 @@ public class Processing {
 	}
 
 	public static void calTotalBal(Lists ll) {
-
+		
 		for (Account ltranAcc : ll.getTranAcc()) {
 
 			for (Account lnewAcc : ll.getInitAcc()) {
-				if (ltranAcc.getAccNum().equals(lnewAcc.getAccNum())) {
-
+				
+				if(ltranAcc.getTranType().equalsIgnoreCase("CS") || ltranAcc.getTranType().equalsIgnoreCase("SC")){
+					continue;
+				}
+				if (ltranAcc.getAccNum().equals(lnewAcc.getAccNum())) {	
 					lnewAcc.setInitBal(ltranAcc.getAmount()
 							+ lnewAcc.getInitBal());
 					if (lnewAcc.getInitBal() < 0) {
-						lnewAcc.setInitBal(lnewAcc.getInitBal() + (-35));
+						if (lnewAcc.getAccType().equalsIgnoreCase("Savings")) {
+							lnewAcc.setInitBal(lnewAcc.getInitBal() + (-35));
+						} else {
+							double overdraftAmount = 0 - lnewAcc.getInitBal();
+							lnewAcc.setInitBal(0);
+							//savings account number 
+							double savIdx = EvilAskApp.findIndex(lnewAcc.getAccNum() + "S", ll)[1];
+							double savBal = EvilAskApp.findIndex(lnewAcc.getAccNum() + "S", ll)[0];
+							ll.getInitAcc().get((int)savIdx).setInitBal(savBal-overdraftAmount-15);							
+						}
 					}
 
 				}
-
+				
 			}
-			DBProcess.updateTotalBalDB(ll);
-
+	
 		}
-
+		DBProcess.updateTotalBalDB(ll);
 	}
 
 	public static void removeAccount(String remv_Acc_num, Lists ll) {

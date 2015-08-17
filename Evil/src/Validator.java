@@ -49,7 +49,7 @@ public class Validator {
 			if (sc.hasNextLine()) {
 				type = sc.nextLine();
 				if (type.length() < 3) {
-					if (type.toUpperCase().charAt(0) == 'A' || type.toUpperCase().charAt(0) == 'C' || type.toUpperCase().charAt(0) == 'D' || type.toUpperCase().charAt(0) == 'R' || type.toUpperCase().charAt(0) == 'W' || type.equals("-1")) {
+					if (type.toUpperCase().charAt(0) == 'A' ||type.toUpperCase().charAt(0) == 'T' || type.toUpperCase().charAt(0) == 'C' || type.toUpperCase().charAt(0) == 'D' || type.toUpperCase().charAt(0) == 'R' || type.toUpperCase().charAt(0) == 'W' || type.equals("-1")) {
 						isValid = true;
 					} else {
 						isValid = false;

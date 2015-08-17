@@ -5,14 +5,25 @@ public class Account {
 	public String accNum;
 	public String Name;
 	public double initBal;
+	public String accType;
+	public Date birthdate;
+	
 	public double amount;
 	public Date date;
 	public String tranType;
-	public double totalBal;
+	
 	public boolean overDraft;
 
 	
 	public String getAccNum() {
+
+		
+		
+		
+		
+		
+		
+		
 		return accNum;
 	}
 	public void setAccNum(String accNum) {
@@ -32,6 +43,21 @@ public class Account {
 		this.initBal = initBal;
 	}
 	
+	public String getAccType() {
+		return accType;
+	}
+	public void setAccType(String accType) {
+		this.accType = accType;
+	}
+	
+	
+	public Date getBirthdate() {
+		return birthdate;
+	}
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+	
 	public double getAmount() {
 		return amount;
 	}
@@ -39,12 +65,7 @@ public class Account {
 		this.amount = amount;
 	}
 	
-	public double getTotalBal() {
-		return totalBal;
-	}
-	public void setTotalBal(double totalBal) {
-		this.totalBal = totalBal;
-	}
+	
 	public Date getDate() {
 		return date;
 	}
